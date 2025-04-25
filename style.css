@@ -1,0 +1,327 @@
+/* === Site Header === */
+.site-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1rem;
+  background-color: #003C8F;
+  border-bottom: 2px solid #002A6F;
+  font-family: sans-serif;
+}
+
+/* — Left: Menu dropdown */
+.header-left {
+  position: relative;
+}
+.dropbtn {
+  background: none;
+  border: none;
+  font-size: 1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  color: #fff;
+}
+.hamburger {
+  font-size: 1.25rem;
+  margin-right: 0.5rem;
+  color: #fff;
+}
+.dropdown-content {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  min-width: 220px;
+  z-index: 10;
+}
+.dropdown-content a {
+  display: block;
+  padding: 0.6rem 1rem;
+  text-decoration: none;
+  color: #333;
+  font-size: 0.95rem;
+}
+.dropdown-content a:hover {
+  background: #f0f0f0;
+}
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+/* — Center: Logo + Search */
+.header-center {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex: 1;
+  justify-content: center;
+}
+.header-center .logo img {
+  height: 40px;
+}
+.header-search {
+  padding: 0.5rem 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 300px;
+}
+
+/* — Right: Login button */
+.header-right .login-btn {
+  padding: 0.6rem 1.2rem;
+  background-color: #FFC107;
+  color: #111;
+  text-decoration: none;
+  border-radius: 4px;
+  font-weight: 600;
+  border: 2px solid transparent;
+}
+.header-right .login-btn:hover {
+  background-color: #e6b800;
+  border-color: #cca300;
+}
+
+/* === Responsive tweaks === */
+@media (max-width: 768px) {
+  .header-center .header-search {
+    display: none;
+  }
+  .header-center .logo img {
+    height: 32px;
+  }
+  .site-header {
+    padding: 0.5rem;
+  }
+}
+
+/* === Sub-header styling === */
+.sub-header {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  background-color: #004a9f;
+  color: #fff;
+  padding: 10px 0;
+}
+.sub-header h2 {
+  margin: 0 0 12px;
+  font-size: 1.3rem;
+  font-weight: 600;
+}
+.info-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+#match-info {
+  font-size: 1rem;
+  font-weight: 500;
+  margin-bottom: 0;
+}
+#countdown {
+  display: inline-flex;
+  gap: 0.5rem;
+  font-size: 1rem;
+  background-color: #FFD700;
+  color: #004a9f;
+  padding: 0.25rem 0.75rem;
+  border-radius: 4px;
+}
+.count {
+  min-width: 2ch;
+  font-weight: 700;
+}
+.label {
+  opacity: 0.9;
+  margin-right: 0.5rem;
+}
+
+/* === Main vertical columns: 25% | 50% | 25% === */
+main.three-column {
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr;
+  gap: 20px;
+  padding: 20px;
+}
+@media (max-width: 768px) {
+  main.three-column {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* === Column headings === */
+main.three-column h3 {
+  margin-bottom: 10px;
+  font-size: 1.1rem;
+  color: #004a9f;
+}
+
+/* === LADDER table styling === */
+#ladder-container table {
+  width: 100%;
+  border-collapse: collapse;
+}
+#ladder-container th,
+#ladder-container td {
+  border: 1px solid #ddd;
+  padding: 6px;
+  text-align: center;
+}
+#ladder-container tr:nth-child(odd) {
+  background: #f9f9f9;
+}
+#ladder-container th {
+  background: #004a9f;
+  color: #fff;
+}
+
+/* News & Updates container */
+#posts-container .post {
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #eee;
+}
+#posts-container .post h4 {
+  margin: 0.5rem 0 0.25rem;
+  color: #004a9f;
+}
+#posts-container .post-thumb {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+#posts-container .post p {
+  margin: 0;
+}
+#posts-container .post a {
+  color: #ffc107;
+  text-decoration: none;
+  font-weight: 600;
+}
+#posts-container .post a:hover {
+  text-decoration: underline;
+}
+
+
+/* === JACKPOT styling === */
+.jackpot-section img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+.jackpot-info {
+  margin: 0.5rem 0;
+  font-size: 1rem;
+  color: #111;
+}
+.jackpot-winners-title {
+  margin: 0.5rem 0 1rem;
+  font-size: 1.1rem;
+  color: #003C8F;
+}
+#jackpot-table table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 2rem;
+}
+#jackpot-table th,
+#jackpot-table td {
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  text-align: center;
+}
+#jackpot-table thead {
+  background-color: #f0f0f0;
+}
+
+/* === Live Ladder Table Styling === */
+#ladder-container table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 0.5rem;
+}
+
+#ladder-container th {
+  background-color: #004a9f;
+  color: #fff;
+  padding: 0.6rem;
+  text-align: center;
+}
+
+#ladder-container td {
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+  text-align: center;
+}
+
+#ladder-container tr:nth-child(odd) {
+  background-color: #f9f9f9;
+}
+
+#ladder-container tr:hover {
+  background-color: #ddeeff;
+}
+
+/* Optional: make sure your heading stays above the table */
+#ladder-container h3 {
+  margin-bottom: 0.75rem;
+  color: #004a9f;
+}
+/* — Shrink Live Ladder font & padding — */
+#ladder-container {
+  font-size: 0.75rem;       /* scale down all text in the ladder */
+}
+
+#ladder-container th,
+#ladder-container td {
+  padding: 4px 6px;         /* reduce cell padding for tighter fit */
+}
+
+/* (Optional) fix column layout so cells don’t force extra width) */
+#ladder-container table {
+  table-layout: fixed;
+  width: 100%;
+}
+#ladder-container th,
+#ladder-container td {
+  overflow: hidden;         /* crop any overflow text */
+  text-overflow: ellipsis;  /* show “…” if text is too long */
+  white-space: nowrap;
+}
+/* — Side columns: blue background & yellow text — */
+#ladder-container,
+.jackpot-section {
+  background-color: #003C8F;  /* same deep blue as header */
+  color: #FFC107;             /* yellow text */
+  padding: 1rem;              /* optional: add padding if needed */
+}
+
+/* Headings, paragraphs, list items */
+#ladder-container h3,
+.jackpot-section h2,
+.jackpot-section h3,
+#ladder-container p,
+.jackpot-section p {
+  color: #FFC107;
+}
+
+/* Links in side columns */
+#ladder-container a,
+.jackpot-section a {
+  color: #ffffff;
+}
+
+/* Table cell text in ladder */
+#ladder-container th,
+#ladder-container td {
+  color: #FFC107;
+  border-color: #002A6F;      /* slightly darker border for contrast */
+}

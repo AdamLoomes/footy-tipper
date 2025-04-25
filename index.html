@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>FootyTipper Header Prototype</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<!-- ————— Countdown Timer ————— -->
+<script>
+  // 1. Set your target cut-off date/time here (YYYY-MM-DDTHH:MM:SS)
+  const targetDate = new Date("2025-05-01T18:00:00");
+
+  function updateCountdown() {
+    const now  = new Date();
+    const diff = targetDate - now;
+
+    if (diff <= 0) {
+      document.getElementById("countdown").innerText = "Closed";
+      clearInterval(timerInterval);
+      return;
+    }
+
+    const days    = Math.floor(diff / 86400000);
+    const hours   = Math.floor((diff / 3600000) % 24);
+    const minutes = Math.floor((diff / 60000) % 60);
+    const seconds = Math.floor((diff / 1000) % 60);
+
+    document.getElementById("days"   ).textContent = String(days   ).padStart(2,'0');
+    document.getElementById("hours"  ).textContent = String(hours  ).padStart(2,'0');
+    document.getElementById("minutes").textContent = String(minutes).padStart(2,'0');
+    document.getElementById("seconds").textContent = String(seconds).padStart(2,'0');
+  }
+
+  // Initialize & tick every second
+  updateCountdown();
+  const timerInterval = setInterval(updateCountdown, 1000);
+</script>
+
+  
+
+<body>
+
+  <!-- Header markup -->
+  <header class="site-header">
+    <div class="header-left">
+      <div class="dropdown">
+        <button class="dropbtn">
+          <span class="hamburger">&#9776;</span>
+          MENU
+        </button>
+        <div class="dropdown-content">
+          <a href="#">2025 Main Competition Ladder</a>
+          <a href="#">Rules</a>
+          <a href="#">Login</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="header-center">
+        <a href="#" class="logo">
+          <img src="footy-tipper-logo.png" alt="FootyTipper Logo">
+        </a>
+        <input
+          type="search"
+          class="header-search"
+          placeholder="Search..."
+          aria-label="Search"
+        />
+      </div>
+
+    <div class="header-right">
+      <a href="#" class="btn login-btn">Login</a>
+    </div>
+  </header>
+
+  <!-- HTML: put this just below your <header>…</header> -->
+  <section class="sub-header">
+    <h2>Next Round Cut-Off</h2>
+    <div class="info-container">
+      <div id="match-info">
+        <strong>Round 9</strong> – Thursday 1st May 6:00 pm AEST Sharks Vs. Eels
+      </div>
+      <div id="countdown">
+        <span class="count" id="days">00</span><span class="label">d</span>
+        <span class="count" id="hours">00</span><span class="label">h</span>
+        <span class="count" id="minutes">00</span><span class="label">m</span>
+        <span class="count" id="seconds">00</span><span class="label">s</span>
+      </div>
+    </div>
+  </section>
+  
+  <main class="three-column">
+    <!-- LEFT: Live Ladder -->
+    <aside id="ladder-container">
+      <h3>Live Ladder</h3>
+      <!-- This div will be filled by JavaScript -->
+      <div id="ladder-table">Loading ladder…</div>
+    </aside>
+    
+  
+    <!-- CENTER: Blog Posts -->
+    <section id="news-updates" class="column center">
+      <h3>News &amp; Updates</h3>
+      <div id="posts-container">Loading latest posts…</div>
+    </section>
+  
+      <!-- Jackpot Section -->
+  <div class="jackpot-section">
+    <h2>Jackpot</h2>
+    <img src="jackpot.png" alt="Jackpot Image">
+
+    <!-- New text -->
+    <p class="jackpot-info">The Jackpot stands at $50.</p>
+    <h3 class="jackpot-winners-title">2025 Jackpot Winners</h3>
+
+    <!-- placeholder for the table -->
+    <div id="jackpot-table"></div>
+  </div>
+
+  <!-- at the very end of <body>, just before </body>
+  <!-- 1) load SheetJS from CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <script>
+    // 2) fetch the XLSX file and render as HTML
+    fetch('jackpot.xlsx')
+      .then(res => res.arrayBuffer())
+      .then(data => {
+        const wb = XLSX.read(data, { type: 'array' });
+        const sheet = wb.Sheets[ wb.SheetNames[0] ];
+        const html = XLSX.utils.sheet_to_html(sheet);
+        document.getElementById('jackpot-table').innerHTML = html;
+      })
+      .catch(console.error);
+  </script>
+
+  </main>
+  
+  <script>
+    // Adjust this URL to point at your WP install:
+    const WP_API = 'https://footytipper.org/wp/wp-json/wp/v2/posts?per_page=5&_embed';
+  
+    fetch(WP_API)
+      .then(res => res.json())
+      .then(posts => {
+        const container = document.getElementById('posts-container');
+        container.innerHTML = '';  // clear the loading text
+  
+        posts.forEach(post => {
+          // Build each article
+          const article = document.createElement('article');
+          article.className = 'post';
+  
+          // If your theme has featured images via _embedded, you can use:
+          const img = post._embedded && post._embedded['wp:featuredmedia']
+            ? `<img src="${post._embedded['wp:featuredmedia'][0].source_url}"
+                     alt="${post._embedded['wp:featuredmedia'][0].alt_text}"
+                     class="post-thumb">`
+            : '';
+  
+          article.innerHTML = `
+            ${img}
+            <h4>${post.title.rendered}</h4>
+            <p>${post.excerpt.rendered}
+               <a href="${post.link}" target="_blank">Read more</a>
+            </p>
+          `;
+          container.appendChild(article);
+        });
+      })
+      .catch(err => {
+        document.getElementById('posts-container').innerText =
+          'Unable to load posts.';
+        console.error(err);
+      });
+  </script>
+  
+  <!-- ————— Jackpot Table Renderer ————— -->
+<script>
+  // 1. Fetch the Excel file from your folder (jackpot.xlsx)
+  fetch('jackpot.xlsx')
+    .then(res => res.arrayBuffer())
+    .then(data => {
+      // 2. Read the file with SheetJS
+      const wb    = XLSX.read(data, { type: 'array' });
+      const sheet = wb.Sheets[ wb.SheetNames[0] ];
+      // 3. Convert to HTML and inject
+      const html  = XLSX.utils.sheet_to_html(sheet);
+      document.getElementById('jackpot-table').innerHTML = html;
+    })
+    .catch(err => {
+      console.error("Error loading XLSX:", err);
+      document.getElementById('jackpot-table').innerText = 'Unable to load jackpot table.';
+    });
+</script>
+
+<!-- ————— Load Latest WP Blog Posts ————— -->
+<script>
+  // 1. Point this at your live site’s REST-API endpoint:
+  const WP_API = 'https://footytipper.org/wp-json/wp/v2/posts?per_page=5&_embed';
+
+  // 2. (Dev-only) Proxy through AllOrigins to avoid CORS errors in Live Server:
+  const PROXY = 'https://api.allorigins.win/raw?url=';
+  const URL   = PROXY + encodeURIComponent(WP_API);
+
+  fetch(URL)
+    .then(res => {
+      if (!res.ok) throw new Error('Network response was not ok');
+      return res.json();
+    })
+    .then(posts => {
+      const container = document.getElementById('posts-container');
+      container.innerHTML = '';  // clear “Loading…” text
+
+      // 3. Loop over each post and append an <article>
+      posts.forEach(post => {
+        const article = document.createElement('article');
+        article.className = 'post';
+
+        // Optional: featured image if available
+        let thumb = '';
+        if (post._embedded && post._embedded['wp:featuredmedia']) {
+          const img = post._embedded['wp:featuredmedia'][0];
+          thumb = `<img src="${img.source_url}" alt="${img.alt_text}" class="post-thumb">`;
+        }
+
+        article.innerHTML = `
+          ${thumb}
+          <h4>
+            <a href="${post.link}" target="_blank">
+              ${post.title.rendered}
+            </a>
+          </h4>
+          <p>
+            ${post.excerpt.rendered}
+            <a href="${post.link}" target="_blank"> Read more</a>
+          </p>
+        `;
+        container.appendChild(article);
+      });
+    })
+    .catch(err => {
+      console.error("WP posts load error:", err);
+      document.getElementById('posts-container').innerText = 'Unable to load posts.';
+    });
+</script>
+
+<script>
+  // 1. Fetch the Excel file from your folder
+  fetch('ladder.xlsx')
+    .then(res => res.arrayBuffer())
+    .then(data => {
+      // 2. Read it with SheetJS
+      const wb    = XLSX.read(data, { type: 'array' });
+      const sheet = wb.Sheets[ wb.SheetNames[0] ];
+      // 3. Convert the sheet into an HTML <table>
+      const tableHtml = XLSX.utils.sheet_to_html(sheet);
+      // 4. Inject that table into our page
+      document.getElementById('ladder-table').innerHTML = tableHtml;
+    })
+    .catch(err => {
+      console.error('Error loading ladder.xlsx:', err);
+      document.getElementById('ladder-table').innerText = 'Unable to load ladder.';
+    });
+</script>
+
+  
+</body>
+</html>
